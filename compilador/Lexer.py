@@ -6,6 +6,14 @@ class Lexer:
 	n_line = 1
 	n_column = 1
 
+	def proxToken(self):
+		lexema = ''
+		estado = 1
+		c = ''
+		
+		while(True):
+			c = ''
+
 
 # Main :D
 if __name__ == '__main__':
@@ -17,6 +25,19 @@ if __name__ == '__main__':
 	except IOError as e:
 		print('Erro de abertura do arquivo', e)
 		exit()
+		
+	# Enquanto nao houver erros ou nao for o fim do arquivo:
+	
+	
+	
+	
+	# Fechando arquivo
+	lexer.close()
+	
+	# Imprimir a tabela de simbolos
+	print('')
+	print('Tabela de simbolos: ')
+	
 	
 	
 
