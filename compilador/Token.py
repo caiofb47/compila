@@ -1,17 +1,17 @@
 class Token:
     
-    # Variaveis
-    nome = ''
-    lexema = ''
-    linha = 0
-    coluna = 0
+    # Variaveis depois ver qual forma e melhor :D
+    #nome = ''
+    #lexema = ''
+    #linha = 0
+    #coluna = 0
 
     # Construtor
     def __init__(self):
-        self.__nome
-        self.__lexema
-        self.__linha
-        self.__coluna
+        self.__nome = ''
+        self.__lexema = ''
+        self.__linha = 0
+        self.__coluna = 0
 
     # Construtor Cheios
     def Token(self, nome, lexema, linha, coluna):
