@@ -96,7 +96,7 @@ if __name__ == '__main__':
 			#print('N retorna')
 			
 		# Break caso fim de arquivo
-		if(token != None and token.nomeGet() != Tag['END_OF_FILE']):
+		if(token != None and token.nomeGet() == Tag['END_OF_FILE']):
 			break
 	
 	
