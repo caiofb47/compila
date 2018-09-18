@@ -16,8 +16,8 @@ class Lexer:
 	def __init__(self):
 		self.instance_file = '' # Referencia para o arquivo
 		self.END_OF_FILE = 0 #TEM Q SER |Constante| para fim do arquivo
-		self.n_line = 0
-		self.n_column = 0
+		self.n_line = 1
+		self.n_column = 1
 		
 		
 	# Funcao para ler o arquivo
@@ -70,17 +70,19 @@ class Lexer:
 				if(lookahead == self.END_OF_FILE):
 					# Retorna um novo token Tag['END_OF_FILE'], 'EOF', self.n_line, self.n_column
 					return Token(Tag['END_OF_FILE'], 'EOF', self.n_line, self.n_column)
-				elif(c == ' ' or c == '\t' or c =='\n' or c =='\r' or c == '7'):
+				elif(c == ' ' or c == '\t' or c =='\n' or c =='\r'):
 					# Permanece no estado 1
 					if(c == '\n' or c == '\r'):
 						self.n_line += 1 # Mudanca de linha
+						
+			
 			
 					
 			
 # Main :D
 if __name__ == '__main__':
 	
-	# Variaveis 
+	# Variaveis Rever Deixar mais bonito
 	token = Token('','',1,1)
 	lexer = Lexer()
 	lexer.Lexer('/home/caiofb47/text')

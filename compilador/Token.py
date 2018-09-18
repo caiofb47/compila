@@ -39,6 +39,7 @@ class Token:
     def colunaSet(self, coluna):
         self.__coluna = coluna
 
+# A tabulacao nao funfa :/ 
     def __srt__(self):
-        return '<', self.__nome, ', \"', self.__lexema, '\">'
+        return "<", self.__nome, self.__lexema, ">    Linha:", self.__linha, "    Coluna: ", self.__coluna
 
