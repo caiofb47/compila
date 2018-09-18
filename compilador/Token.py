@@ -1,25 +1,19 @@
+import Tag
 class Token:
     
     # Variaveis depois ver qual forma e melhor :D
-    #nome = ''
-    #lexema = ''
-    #linha = 0
-    #coluna = 0
+    nome = Tag
+    lexema = ''
+    linha = 0
+    coluna = 0
 
     # Construtor
-    def __init__(self):
-        self.__nome = ''
-        self.__lexema = ''
-        self.__linha = 0
-        self.__coluna = 0
-
-    # Construtor Cheios
-    def Token(self, nome, lexema, linha, coluna):
+    def __init__(self, nome, lexema, linha, coluna):
         self.__nome = nome
         self.__lexema = lexema
         self.__linha = linha
         self.__coluna = coluna
-
+        
     # Gets e Sets :D
     def nomeGet(self):
         return self.__nome
@@ -47,3 +41,4 @@ class Token:
 
     def __srt__(self):
         return '<', self.__nome, ', \"', self.__lexema, '\">'
+

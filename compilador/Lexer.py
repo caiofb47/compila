@@ -1,7 +1,6 @@
 # Imports
-from _ast import TryExcept
-from Token import Token
 from Tag import Tag
+from Token import Token
 
 
 
@@ -69,9 +68,9 @@ class Lexer:
 			if (estado == 1):
 				
 				if(lookahead == self.END_OF_FILE):
-					# Retorna um novo token
-					return Token().Token(Tag['END_OF_FILE'], 'EOF', self.n_line, self.n_column)
-				elif(c == ' ' or c == '\t' or c =='\n' or c =='\r'):
+					# Retorna um novo token Tag['END_OF_FILE'], 'EOF', self.n_line, self.n_column
+					return Token(Tag['END_OF_FILE'], 'EOF', self.n_line, self.n_column)
+				elif(c == ' ' or c == '\t' or c =='\n' or c =='\r' or c == '7'):
 					# Permanece no estado 1
 					if(c == '\n' or c == '\r'):
 						self.n_line += 1 # Mudanca de linha
@@ -82,16 +81,16 @@ class Lexer:
 if __name__ == '__main__':
 	
 	# Variaveis 
-	token = Token()
+	token = Token('','',1,1)
 	lexer = Lexer()
 	lexer.Lexer('/home/caiofb47/text')
 	
 	# Enquanto nao houver erros
 	while(True):
 		token = lexer.proxToken()
-		# Imprimindo TOKEN
+
 		if(token != None):
-			print('Token: ', token.__srt__)
+			print('Token: ', token.__srt__())
 		# Test se a funcao .proxToken() retorna
 		#else:
 			#print('N retorna')
@@ -100,8 +99,6 @@ if __name__ == '__main__':
 		if(token != None and token.nomeGet() != Tag['END_OF_FILE']):
 			break
 	
-	
-
 	
 	# Imprimir a tabela de simbolos
 	print('')
