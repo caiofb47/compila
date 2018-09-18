@@ -3,8 +3,6 @@ from Tag import Tag
 from Token import Token
 
 
-
-
 # Procurar pela tag "Rever"
 
 # Caio Fabio Gomes Alves - caiofb47@gmail.com
@@ -69,11 +67,71 @@ class Lexer:
 				
 				if(lookahead == self.END_OF_FILE):
 					# Retorna um novo token Tag['END_OF_FILE'], 'EOF', self.n_line, self.n_column
-					return Token(Tag['END_OF_FILE'], 'EOF', self.n_line, self.n_column)
+					return Token(Tag['EOF'], 'EOF', self.n_line, self.n_column)
+				
+				# Estado 1
 				elif(c == ' ' or c == '\t' or c =='\n' or c =='\r'):
 					# Permanece no estado 1
 					if(c == '\n' or c == '\r'):
 						self.n_line += 1 # Mudanca de linha
+						self.n_column = 1 # Volta o apontamento pra 1
+					elif (c == ' '):
+						self.n_column += 1
+					elif (c == '\t'):
+						self.n_column += 3 # Rever: nao tenho certeza se sao 3
+				
+					estado = 1
+				# Nivel 1	
+				# Estado 2
+				elif (c == '+'):
+					estado = 2
+				
+				# Estado 3
+				elif (c == '-'):
+					estado = 3
+				
+				# Estado 4
+				elif (c == '*'):
+					estado = 4
+					
+				# Estado 5 (Pode tomar mais de um caminho :D)
+				elif (c == '/'):
+					estado = 5
+				
+				# Rever Falta o Q9(10) e o Q10(11)
+				
+				# Letras
+				
+				
+				
+				# FIM Nivel 1	
+				
+				# RAMOS do Estado 5		
+			if (estado == 5):
+				
+				if (c == '/'):
+					return Token(Tag['/'], '/', self.n_line, self.n_column)
+				# Identificou um comentario
+				elif (c == '*'):
+					estado = 7
+			
+			if (estado == 7): # Ramo do 7
+				if (c == '*'):
+					estado = 8
+					
+			if (estado == 8):
+				if (c == '*'):
+					estado = 9
+					
+			if (estado == 9):
+				if (c == '/'):
+					return Token(Tag['Coment'], '/**/', self.n_line, self.n_column)
+					
+					
+					
+				
+				
+					
 						
 			
 			
@@ -85,7 +143,7 @@ if __name__ == '__main__':
 	# Variaveis Rever Deixar mais bonito
 	token = Token('','',1,1)
 	lexer = Lexer()
-	lexer.Lexer('/home/caiofb47/text')
+	lexer.Lexer('/home/caiofb47/text2')
 	
 	# Enquanto nao houver erros
 	while(True):
@@ -98,7 +156,7 @@ if __name__ == '__main__':
 			#print('N retorna')
 			
 		# Break caso fim de arquivo
-		if(token != None and token.nomeGet() == Tag['END_OF_FILE']):
+		if(token != None and token.nomeGet() == Tag['EOF']):
 			break
 	
 	

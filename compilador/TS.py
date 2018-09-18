@@ -17,7 +17,7 @@ class Ts:
 
         # Inserindo Palavras reservadas
         # Cria um token
-        word = Token(Tag['Key_Word'], 'public', 0, 0)
+        word = Token(Tag['KW'], 'public', 0, 0)
         self.__tabelaSimbolos('public',word)
         
         

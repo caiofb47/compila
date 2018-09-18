@@ -1,3 +1,3 @@
 # Classe com todas as tags a serem utilizadas com compilador
 # Dict
-Tag = {'Key_Word':'KW','END_OF_FILE':'EOF'}
+Tag = {'KW':'Key_Word','EOF':'END_OF_FILE','/':'OP_DIV'}
