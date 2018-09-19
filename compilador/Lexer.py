@@ -59,29 +59,25 @@ class Lexer:
 		c = ''
 
 		while(True):
-		
 			# Avanca caractere ou retorna um token
 			try:
 				# Como python le direto o arquivo, n precisa converter
 				if (self.lookahead != self.END_OF_FILE):
 					c = self.instance_file[self.lookahead] # Le um caractere
 					self.lookahead += 1 # Muda o apontamento
-					
-					
-			# Rever essa exception, pq n e de entrada e saida :/
+						
+			# Rever: essa exception, pq n e de entrada e saida :/
 			except IOError as e:
 				print("Erro na leitura do caractere")
 				
-			
-			
 			# Movimentacao do AFD
+			# Inicio
 			if (estado == 0):
 				
 				if(self.lookahead == self.END_OF_FILE):
 					# Retorna um novo token Tag['END_OF_FILE'], 'EOF', self.n_line, self.n_column
 					return Token(Tag['EOF'], 'EOF', self.n_line, self.n_column)
 				
-				# Estado 1
 				elif(c == ' ' or c == '\t' or c =='\n' or c =='\r'):
 					# Permanece no estado 1
 					if(c == '\n' or c == '\r'):
@@ -93,82 +89,94 @@ class Lexer:
 						self.n_column += 3 # Rever: nao tenho certeza se sao 3
 				
 					estado = 0
-					
-					
-					
+						
 				# Nivel 1	
-				# Estado 2
 				elif (c == '+'):
-					estado = 1
+					return Token(Tag['+'],'+',self.n_line, self.n_column)
 				
-				# Estado 3
 				elif (c == '-'):
-					estado = 2
+					return Token(Tag['-','-',self.n_line,self.n_column])
 				
-				# Estado 4
 				elif (c == '*'):
-					estado = 3
-					
-				# Estado 5 (Pode tomar mais de um caminho :D)
+					return Token(Tag['*','*',self.n_line,self.n_column])
+				
+				# Estado 4,5,6
 				elif (c == '/'):
 					estado = 4
-				
-				# Rever Falta o Q9(10) e o Q10(11)
-				
-				# Letras
+					
+				# ID - Letras A-Z || a-z
 				elif ((c >= 65 or c <= 95) and (c >= 97 or c <= 122)):
 					lexema.append(c) # Adicionando c na string
 					estado = 11
-					
 				
-				
-				# Digitos
+				# Digitos 0-9
 				elif (c >= 48 or c <= 57):
 					lexema.append(c)
+					estado = 13
 					
-					
-				
-				
 				
 				# FIM Nivel 1	
 				
-				# RAMOS do Estado 5		Rever ******************************
+			
 			if (estado == 4):
-				
-				#Rever
-				if (c == ' '):
-					return Token(Tag['/'], '/', self.n_line, self.n_column)
 				# Identificou um comentario
-				elif (c == '*'):
+				if (c == '*'):
 					estado = 6
 					
 				elif(c == '/'):
 					estado = 9
+				# Outro = else :D
+				else:
+					return Token(Tag['/'], '/', self.n_line, self.n_column)
 			
-			if (estado == 6): # Ramo do 6
+			# Mini Loop
+			if (estado == 6):
 				if (c == '*'):
 					estado = 7
 					
 			if (estado == 7):
-				if (c == '*'):
-					estado = 8
-					
-			if (estado == 8):
 				if (c == '/'):
-					return Token(Tag['Coment'], '/**/', self.n_line, self.n_column)
-					#Rever ******************************
-					
+					estado = 8
+				else:
+					estado = 6 # So sai daqui se vier */
+			
+			# Comentario de mais de uma linha		
+			if (estado == 8):
+				return Token(Tag['Coment'], '/**/', self.n_line, self.n_column)
+
+			# Comentario de uma unica linha com parada no \n		
 			if (estado == 9):
 				if (c == '\n'):
 					return Token(Tag['Coment', '//', self.n_line, self.n_column])
 					
-			# A-Z a-z 0-9		
+			#Identificou um ID A-Z a-z 0-9		
 			if (estado == 11):
-				if ((c >= 65 or c <= 95) and (c >= 97 or c <= 122) or (c >= 48 or c <= 57)):
-					estado = 11
-				
-							
+				if (((c >= 65 or c <= 95) and (c >= 97 or c <= 122)) or (c >= 48 or c <= 57)):
+					lexema.append(c)
+					# permanece no estado = 11
+				else:
+					# Estado 12
+					self.retornaPonteiro()
+					return Token(Tag['ID'], '', self.n_line, self.n_column) # Rever lexema - toString || __srt__(self)
+					
 			
+			if (estado == 13):
+				if (c >= 48 or c <= 57):
+					lexema.append(c) # permanece no estado 13
+				elif(c == '.'):
+					estado = 15
+				else:
+					# Estado 14
+					return Token(Tag['INTEGER'], 'INTEGER', self.n_line, self.n_column)
+					
+								
+			if (estado == 15):
+				if (c >= 48 or c <= 57):
+					lexema.append(c) # permanece no estado 16
+				else:
+					# Estado 17
+					return Token(Tag['DOUBLE'], 'DOUBLE', self.n_line, self.n_column)
+					
 # Main :D
 if __name__ == '__main__':
 	
@@ -183,9 +191,6 @@ if __name__ == '__main__':
 
 		if(token != None):
 			print('Token: ', token.__srt__())
-		# Test se a funcao .proxToken() retorna
-		#else:
-			#print('N retorna')
 			
 		# Break caso fim de arquivo
 		if(token != None and token.nomeGet() == Tag['EOF']):
