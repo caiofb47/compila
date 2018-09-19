@@ -9,13 +9,13 @@ from Token import Token
 
 class Lexer:
 	
-	
 	# Construtor/Inicializador da classe LEXER
 	def __init__(self):
 		self.instance_file = '' # Referencia para o arquivo
 		self.END_OF_FILE = 0 #TEM Q SER |Constante| para fim do arquivo
 		self.n_line = 1
 		self.n_column = 1
+		self.lookahead = 0 # Armazena a posicao do ultimo caractere lido no arquivo	
 		
 		
 	# Funcao para ler o arquivo
@@ -35,25 +35,37 @@ class Lexer:
 		except IOError as e:
 			print('Erro de abertura do arquivo:', e)
 			exit(1)
+			
+	# Reporta erro para o usuario	
+	def sinalizaErro(self, menssagem):
+		print('[Erro Lexico]: ', menssagem,'\n')
+	
+	 #Volta uma posicao do buffer de leitura
+	def retornaPonteiro(self):
+		try:
+			if(self.lookahead != self.END_OF_FILE):
+				self.instance_file.seek(self.instance_file.getFilePointer() - 1);
+				
+		except IOError as e:
+			print('Falha ao retornar a leitura\n',e,'\n')
+			exit(4)	
 		
 	# Metodo que simula o AUTOMATO Finito Determinisitico
 	def proxToken(self):
 		
-		# Variaveis do AUTOMATO FD
-		lookahead = 0 # Armazena a posicao do ultimo caractere lido no arquivo	
-		lexema = ''
-		estado = 1
+		# Variaveis do AUTOMATO FDD
+		lexema = []
+		estado = 0
 		c = ''
 
-		
 		while(True):
 		
 			# Avanca caractere ou retorna um token
 			try:
 				# Como python le direto o arquivo, n precisa converter
-				if (lookahead != self.END_OF_FILE):
-					c = self.instance_file[lookahead] # Le um caractere
-					lookahead += 1 # Muda o apontamento
+				if (self.lookahead != self.END_OF_FILE):
+					c = self.instance_file[self.lookahead] # Le um caractere
+					self.lookahead += 1 # Muda o apontamento
 					
 					
 			# Rever essa exception, pq n e de entrada e saida :/
@@ -63,9 +75,9 @@ class Lexer:
 			
 			
 			# Movimentacao do AFD
-			if (estado == 1):
+			if (estado == 0):
 				
-				if(lookahead == self.END_OF_FILE):
+				if(self.lookahead == self.END_OF_FILE):
 					# Retorna um novo token Tag['END_OF_FILE'], 'EOF', self.n_line, self.n_column
 					return Token(Tag['EOF'], 'EOF', self.n_line, self.n_column)
 				
@@ -80,62 +92,82 @@ class Lexer:
 					elif (c == '\t'):
 						self.n_column += 3 # Rever: nao tenho certeza se sao 3
 				
-					estado = 1
+					estado = 0
+					
+					
+					
 				# Nivel 1	
 				# Estado 2
 				elif (c == '+'):
-					estado = 2
+					estado = 1
 				
 				# Estado 3
 				elif (c == '-'):
-					estado = 3
+					estado = 2
 				
 				# Estado 4
 				elif (c == '*'):
-					estado = 4
+					estado = 3
 					
 				# Estado 5 (Pode tomar mais de um caminho :D)
 				elif (c == '/'):
-					estado = 5
+					estado = 4
 				
 				# Rever Falta o Q9(10) e o Q10(11)
 				
 				# Letras
+				elif ((c >= 65 or c <= 95) and (c >= 97 or c <= 122)):
+					lexema.append(c) # Adicionando c na string
+					estado = 11
+					
+				
+				
+				# Digitos
+				elif (c >= 48 or c <= 57):
+					lexema.append(c)
+					
+					
 				
 				
 				
 				# FIM Nivel 1	
 				
-				# RAMOS do Estado 5		
-			if (estado == 5):
+				# RAMOS do Estado 5		Rever ******************************
+			if (estado == 4):
 				
-				if (c == '/'):
+				#Rever
+				if (c == ' '):
 					return Token(Tag['/'], '/', self.n_line, self.n_column)
 				# Identificou um comentario
 				elif (c == '*'):
-					estado = 7
+					estado = 6
+					
+				elif(c == '/'):
+					estado = 9
 			
-			if (estado == 7): # Ramo do 7
+			if (estado == 6): # Ramo do 6
+				if (c == '*'):
+					estado = 7
+					
+			if (estado == 7):
 				if (c == '*'):
 					estado = 8
 					
 			if (estado == 8):
-				if (c == '*'):
-					estado = 9
-					
-			if (estado == 9):
 				if (c == '/'):
 					return Token(Tag['Coment'], '/**/', self.n_line, self.n_column)
+					#Rever ******************************
 					
+			if (estado == 9):
+				if (c == '\n'):
+					return Token(Tag['Coment', '//', self.n_line, self.n_column])
 					
-					
+			# A-Z a-z 0-9		
+			if (estado == 11):
+				if ((c >= 65 or c <= 95) and (c >= 97 or c <= 122) or (c >= 48 or c <= 57)):
+					estado = 11
 				
-				
-					
-						
-			
-			
-					
+							
 			
 # Main :D
 if __name__ == '__main__':
@@ -143,7 +175,7 @@ if __name__ == '__main__':
 	# Variaveis Rever Deixar mais bonito
 	token = Token('','',1,1)
 	lexer = Lexer()
-	lexer.Lexer('/home/caiofb47/text2')
+	lexer.Lexer('/home/caiofb47/text')
 	
 	# Enquanto nao houver erros
 	while(True):
