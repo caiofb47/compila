@@ -116,7 +116,7 @@ class Lexer:
 					lexema.append(c)
 					estado = 13
 				
-				# Estado 19 || String
+				# Estado 18 || String
 				elif (c == '"'):
 					estado = 18
 				
@@ -140,6 +140,15 @@ class Lexer:
 				elif (c == '='):
 					return Token(Tag['='],'=', self.n_line, self.n_column)
 				
+				# Estado 26
+				elif (c == '>'):
+					estado = 26
+					
+				
+				# Estado 29
+				elif (c == '<'):
+					estado = 29
+						
 				# FIM # Estados principais		
 			
 			if (estado == 4):
@@ -172,7 +181,8 @@ class Lexer:
 			if (estado == 9):
 				if (c == '\n'):
 					return Token(Tag['Coment', '//', self.n_line, self.n_column])
-					
+			
+			# Estado 11		
 			#Identificou um ID A-Z a-z 0-9		
 			if (estado == 11):
 				if (((c >= 65 or c <= 95) and (c >= 97 or c <= 122)) or (c >= 48 or c <= 57)):
@@ -182,7 +192,8 @@ class Lexer:
 					# Estado 12
 					self.retornaPonteiro()
 					return Token(Tag['ID'], '', self.n_line, self.n_column) # Rever lexema - toString || __srt__(self)
-							
+			
+			# Estado 13			
 			if (estado == 13):
 				if (c >= 48 or c <= 57):
 					lexema.append(c) # permanece no estado 13
@@ -193,7 +204,8 @@ class Lexer:
 					# Estado 14
 					self.retornaPonteiro()
 					return Token(Tag['INTEGER'], 'INTEGER', self.n_line, self.n_column)
-									
+				
+			# Estado 15						
 			if (estado == 15): # Tratar os erros de n vir numero
 				if (c >= 48 or c <= 57):
 					lexema.append(c) # permanece no estado 16
@@ -202,7 +214,8 @@ class Lexer:
 					self.retornaPonteiro()
 					return Token(Tag['DOUBLE'], 'DOUBLE', self.n_line, self.n_column)
 			
-			# Sinais graficos (imprimiveis) 32 a 126 Rever
+			
+			# Estado 18 || Sinais graficos (imprimiveis) 32 a 126 Rever
 			if (estado == 18):
 				if (c == '"'):
 					self.sinalizaErro('String deve conter pelo menos um caractere. Erro na linha ', self.n_line, ' coluna ', self.n_column)
@@ -217,6 +230,7 @@ class Lexer:
 					lexema.append(c)
 					estado = 19
 			
+			# Estado 19
 			if (estado == 19):
 				if (c == '"'):
 					#Estado = 20
@@ -231,9 +245,37 @@ class Lexer:
 					# Permanece no 19
 					lexema.append(c)
 			
-				
+			# Estado 26
+			if (estado == 26):
+				if(c == '='):
+					# Estado 28
+					return Token(Tag['>='],'>=',self.n_line, self.n_column)
+				else:
+					# Estado 27
+					self.retornaPonteiro()
+					return Token(Tag['>'],'>',self.n_line, self.n_column)
 			
-					
+			# Estado 29
+			if (estado == 29):
+				# Estado 30
+				if (c == '>'):
+					return Token(Tag['<>'],'<>', self.n_line, self.n_column)
+				# Estado 31
+				elif(c == '='):
+					return Token(Tag[''],'', self.n_line, self.n_column)
+				elif(c == '-'):
+					estado = 33
+				# Estado 32
+				else:
+					self.retornaPonteiro()
+					return Token(Tag['<'],'<',self.n_line, self.n_column)
+			
+			# Estado 33
+			if (estado == 33):
+				#Estado 34
+				if (c == '-'):
+					return Token(Tag['<--'],'<--', self.n_line, self.n_column)
+			
 # Main :D
 if __name__ == '__main__':
 	
