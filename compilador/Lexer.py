@@ -114,6 +114,8 @@ class Lexer:
 					lexema.append(c)
 					estado = 13
 					
+				elif ():
+					
 				
 				# FIM Nivel 1	
 				
@@ -164,18 +166,24 @@ class Lexer:
 				if (c >= 48 or c <= 57):
 					lexema.append(c) # permanece no estado 13
 				elif(c == '.'):
+					lexema.append(c)
 					estado = 15
 				else:
 					# Estado 14
+					self.retornaPonteiro()
 					return Token(Tag['INTEGER'], 'INTEGER', self.n_line, self.n_column)
 					
 								
-			if (estado == 15):
+			if (estado == 15): # Tratar os erros de n vir numero
 				if (c >= 48 or c <= 57):
 					lexema.append(c) # permanece no estado 16
 				else:
 					# Estado 17
+					self.retornaPonteiro()
 					return Token(Tag['DOUBLE'], 'DOUBLE', self.n_line, self.n_column)
+				
+			
+
 					
 # Main :D
 if __name__ == '__main__':
