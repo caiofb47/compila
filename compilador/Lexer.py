@@ -1,7 +1,7 @@
 # Imports
 from Tag import Tag
 from Token import Token
-
+from formatter import NullFormatter
 
 # Procurar pela tag "Rever"
 
@@ -17,10 +17,9 @@ class Lexer:
 		self.n_column = 1
 		self.lookahead = 0 # Armazena a posicao do ultimo caractere lido no arquivo	
 		
-		
 	# Funcao para ler o arquivo
 	def Lexer(self, input_data):
-		# Tentar abrir e ler arquivo
+		# Tenta abrir e ler arquivo
 		try:
 			
 			# Abrindo o arquivo
@@ -28,7 +27,7 @@ class Lexer:
 			# Lendo o arquivo
 			self.instance_file = lido.read()
 			
-			# Pegando o tamanho do arquivo com a funcao len
+			# Pegando o tamanho do arquivo com a funcao len para obter o EOF
 			self.END_OF_FILE = len(self.instance_file) - 1
 		
 		# Excecao de "No such file or directory"
@@ -53,7 +52,7 @@ class Lexer:
 	# Metodo que simula o AUTOMATO Finito Determinisitico
 	def proxToken(self):
 		
-		# Variaveis do AUTOMATO FDD
+		# Variaveis do AUTOMATO FD
 		lexema = []
 		estado = 0
 		c = ''
@@ -72,6 +71,7 @@ class Lexer:
 				
 			# Movimentacao do AFD
 			# Inicio
+			# Estado 0
 			if (estado == 0):
 				
 				if(self.lookahead == self.END_OF_FILE):
@@ -90,7 +90,9 @@ class Lexer:
 				
 					estado = 0
 						
-				# Nivel 1	
+				# Estados principais
+				
+					
 				elif (c == '+'):
 					return Token(Tag['+'],'+',self.n_line, self.n_column)
 				
@@ -100,25 +102,45 @@ class Lexer:
 				elif (c == '*'):
 					return Token(Tag['*','*',self.n_line,self.n_column])
 				
-				# Estado 4,5,6
+				# Estado 4 vai pra 5,6
 				elif (c == '/'):
 					estado = 4
 					
-				# ID - Letras A-Z || a-z
+				# Estado 11 || ID - Letras A-Z || a-z
 				elif ((c >= 65 or c <= 95) and (c >= 97 or c <= 122)):
 					lexema.append(c) # Adicionando c na string
 					estado = 11
 				
-				# Digitos 0-9
+				# Estado 13 ||Digitos 0-9
 				elif (c >= 48 or c <= 57):
 					lexema.append(c)
 					estado = 13
-					
-				elif ():
-					
 				
-				# FIM Nivel 1	
+				# Estado 19 || String
+				elif (c == '"'):
+					estado = 18
 				
+				#Estado 21	
+				elif (c == ';'):
+					return Token(Tag[';'],';', self.n_line, self.n_column)
+				
+				# Estado 22
+				elif (c == ','):
+					return Token(Tag[','],',', self.n_line, self.n_column)	
+
+				# Estado 23
+				elif (c == ')'):
+					return Token(Tag[')'],')', self.n_line, self.n_column)
+				
+				# Estado 24
+				elif (c == '('):
+					return Token(Tag['('],'(', self.n_line, self.n_column)
+				
+				# Estado 25
+				elif (c == '='):
+					return Token(Tag['='],'=', self.n_line, self.n_column)
+				
+				# FIM # Estados principais		
 			
 			if (estado == 4):
 				# Identificou um comentario
@@ -160,8 +182,7 @@ class Lexer:
 					# Estado 12
 					self.retornaPonteiro()
 					return Token(Tag['ID'], '', self.n_line, self.n_column) # Rever lexema - toString || __srt__(self)
-					
-			
+							
 			if (estado == 13):
 				if (c >= 48 or c <= 57):
 					lexema.append(c) # permanece no estado 13
@@ -172,8 +193,7 @@ class Lexer:
 					# Estado 14
 					self.retornaPonteiro()
 					return Token(Tag['INTEGER'], 'INTEGER', self.n_line, self.n_column)
-					
-								
+									
 			if (estado == 15): # Tratar os erros de n vir numero
 				if (c >= 48 or c <= 57):
 					lexema.append(c) # permanece no estado 16
@@ -181,9 +201,38 @@ class Lexer:
 					# Estado 17
 					self.retornaPonteiro()
 					return Token(Tag['DOUBLE'], 'DOUBLE', self.n_line, self.n_column)
+			
+			# Sinais graficos (imprimiveis) 32 a 126 Rever
+			if (estado == 18):
+				if (c == '"'):
+					self.sinalizaErro('String deve conter pelo menos um caractere. Erro na linha ', self.n_line, ' coluna ', self.n_column)
+					return null
+				elif (c == 'Padrao para [ConstString] invalido na linha '):
+					self.sinalizaErro('String deve conter pelo menos um caractere. Erro na linha ', self.n_line, ' coluna ', self.n_column)
+					return null
+				elif (lookahead == END_OF_FILE):
+					self.sinalizaErro('String deve ser fechada com \" antes do fim de arquivo')
+					return null 
+				else:
+					lexema.append(c)
+					estado = 19
+			
+			if (estado == 19):
+				if (c == '"'):
+					#Estado = 20
+					return Token(Tag['String'], '', self.n_line, self.n_column) # Rever toString do lexer
+				elif (c == 'Padrao para [ConstString] invalido na linha '):
+					self.sinalizaErro('String deve conter pelo menos um caractere. Erro na linha ', self.n_line, ' coluna ', self.n_column)
+					return null
+				elif (lookahead == END_OF_FILE):
+					self.sinalizaErro('String deve ser fechada com \" antes do fim de arquivo')
+					return null
+				else:
+					# Permanece no 19
+					lexema.append(c)
+			
 				
 			
-
 					
 # Main :D
 if __name__ == '__main__':
