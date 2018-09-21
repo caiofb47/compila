@@ -1,7 +1,7 @@
 # Imports
 from Tag import Tag
 from Token import Token
-from formatter import NullFormatter
+from TS import TS
 
 # Procurar pela tag "Rever"
 
@@ -111,6 +111,7 @@ class Lexer:
 				# Estado 13 ||Digitos 0-9
 				elif (c.isdigit()):
 					lexema.append(c)
+					self.n_column += 1
 					estado = 13
 				
 				# Estado 18 || String
@@ -184,6 +185,7 @@ class Lexer:
 			if (estado == 11):
 				if (c.isalpha() or c.isdigit()):
 					lexema.append(c)
+					self.n_column += 1
 					# permanece no estado = 11
 				else:
 					# Estado 12
@@ -194,6 +196,7 @@ class Lexer:
 			if (estado == 13):
 				if (c >= 48 or c <= 57):
 					lexema.append(c) # permanece no estado 13
+					self.n_column += 1
 				elif(c == '.'):
 					lexema.append(c)
 					estado = 15
@@ -206,6 +209,7 @@ class Lexer:
 			if (estado == 15): # Tratar os erros de n vir numero
 				if (c.isdigit()):
 					lexema.append(c) # permanece no estado 16
+					self.n_column += 1
 				else:
 					# Estado 17
 					#self.retornaPonteiro()
@@ -215,16 +219,17 @@ class Lexer:
 			# Estado 18 || Sinais graficos (imprimiveis) 32 a 126 Rever
 			if (estado == 18):
 				if (c == '"'):
-					print('[Erro Lexico]: String deve conter pelo menos um caractere. Erro na linha ', self.n_line, ' coluna ', self.n_column)
+					print('[Erro Lexico]: String deve conter pelo menos um caractere. Erro na linha %d \t coluna %d' %(self.n_line,  self.n_column))
 					return None
 				elif (c == 'Padrao para [ConstString] invalido na linha '):
-					print('[Erro Lexico]: String deve conter pelo menos um caractere. Erro na linha ', self.n_line, ' coluna ', self.n_column)
+					print('[Erro Lexico]: String deve conter pelo menos um caractere. Erro na linha %d \t coluna %d' %(self.n_line,  self.n_column))
 					return None
 				elif (lookahead == END_OF_FILE):
 					print('[Erro Lexico]: String deve ser fechada com \" antes do fim de arquivo')
 					return None
 				else:
 					lexema.append(c)
+					self.n_column += 1
 					estado = 19
 			
 			# Estado 19
@@ -241,6 +246,7 @@ class Lexer:
 				else:
 					# Permanece no 19
 					lexema.append(c)
+					self.n_column += 1
 			
 			# Estado 26
 			if (estado == 26):
@@ -277,7 +283,8 @@ class Lexer:
 if __name__ == '__main__':
 	
 	# Variaveis Rever Deixar mais bonito
-	token = Token('','',1,1)
+	TS = TS()
+	token = Token('','',0,0)
 	lexer = Lexer()
 	lexer.Lexer('/home/caiofb47/text')
 	
@@ -286,16 +293,16 @@ if __name__ == '__main__':
 		token = lexer.proxToken()
 
 		if(token != None):
-			print('Token: ', token.__srt__())
+			print(token.__srt__())
 			
 		# Break caso fim de arquivo
 		if(token != None and token.nomeGet() == Tag['EOF']):
 			break
 	
-	
 	# Imprimir a tabela de simbolos
 	print('')
 	print('Tabela de simbolos: ')
+	
 	
 	
 	

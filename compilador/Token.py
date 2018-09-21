@@ -41,5 +41,5 @@ class Token:
 
 # A tabulacao nao funfa :/ 
     def __srt__(self):
-        return "<", self.__nome, self.__lexema, ">    Linha:", self.__linha, "    Coluna: ", self.__coluna
+        return "Token: <'%s';'%s'> \t Linha: %d \t Coluna: %d" %(self.__nome, self.__lexema, self.__linha, self.__coluna)
 

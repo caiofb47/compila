@@ -1,10 +1,17 @@
-algoritmo "Lista de exercicios"
-var
-I,N, TOTAL: real
-inicio
-TOTAL <- 0="0" p="p">escreval ("Digite um valor para N: ")
-leia (N)
-enquanto (I <= N) faca
-TOTAL <- i="i" p="p" total="total">I <- 1="1" i="i" p="p">fimenquanto
-escreval (" O valor total de H é: ", TOTAL)
-fimalgoritmo
+algoritmo 
+	declare 
+	op literal;
+	
+	escreva("Vc prefere Goku ou Vegeta? Informe G ou V: ");
+	leia(op);
+	se(op = "G") inicio 
+	   escreva("Oi, eu sou o Goku!");
+	fim 
+	senao inicio 
+	   escreva("Seu inseto, achei que iria preferir o Kakaroto");
+	fim
+fim algoritmo 
+
+subrotina fazNada(v1 nulo)
+	escreva("Se a rotina faz nada, por que tem um comando de impressao?");
+fim subrotina
