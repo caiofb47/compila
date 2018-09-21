@@ -107,8 +107,8 @@ class Lexer:
 					estado = 4
 					
 				# Estado 11 || ID - Letras A-Z || a-z
-				elif ((c >= 65 or c <= 95) and (c >= 97 or c <= 122)):
-					lexema.append(c) # Adicionando c na string
+			#	elif ((c >= 65 or c <= 95) and (c >= 97 or c <= 122)):
+				elif (c.isalpha()):
 					estado = 11
 				
 				# Estado 13 ||Digitos 0-9
@@ -185,7 +185,7 @@ class Lexer:
 			# Estado 11		
 			#Identificou um ID A-Z a-z 0-9		
 			if (estado == 11):
-				if (((c >= 65 or c <= 95) and (c >= 97 or c <= 122)) or (c >= 48 or c <= 57)):
+				if (c.isalpha() or c.isdigit()):
 					lexema.append(c)
 					# permanece no estado = 11
 				else:
@@ -207,7 +207,7 @@ class Lexer:
 				
 			# Estado 15						
 			if (estado == 15): # Tratar os erros de n vir numero
-				if (c >= 48 or c <= 57):
+				if (c.isdigit()):
 					lexema.append(c) # permanece no estado 16
 				else:
 					# Estado 17
