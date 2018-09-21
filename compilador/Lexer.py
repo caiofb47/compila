@@ -190,7 +190,8 @@ class Lexer:
 				else:
 					# Estado 12
 					#self.retornaPonteiro()
-					return Token(Tag['ID'], '', self.n_line, self.n_column) # Rever lexema - toString || __srt__(self)
+					con_lisString = ''.join(lexema)
+					return Token(Tag['ID'], con_lisString, self.n_line, self.n_column) # Rever lexema - toString || __srt__(self)
 			
 			# Estado 13			
 			if (estado == 13):
@@ -236,7 +237,8 @@ class Lexer:
 			if (estado == 19):
 				if (c == '"'):
 					#Estado = 20
-					return Token(Tag['String'], '', self.n_line, self.n_column) # Rever toString do lexer
+					con_lisString = ''.joim(lexema)
+					return Token(Tag['String'], con_lisString, self.n_line, self.n_column) # Rever toString do lexer
 				elif (c == 'Padrao para [ConstString] invalido na linha '):
 					print('[Erro Lexico]: String deve conter pelo menos um caractere. Erro na linha ', self.n_line, ' coluna ', self.n_column)
 					return None
