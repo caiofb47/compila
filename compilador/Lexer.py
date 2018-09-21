@@ -35,9 +35,6 @@ class Lexer:
 			print('Erro de abertura do arquivo:', e)
 			exit(1)
 			
-	# Reporta erro para o usuario	
-	def sinalizaErro(self, menssagem):
-		print('[Erro Lexico]: ', menssagem,'\n')
 	
 	 #Volta uma posicao do buffer de leitura
 	def retornaPonteiro(self):
@@ -46,7 +43,7 @@ class Lexer:
 				self.instance_file.seek(self.instance_file.getFilePointer() - 1);
 				
 		except IOError as e:
-			print('Falha ao retornar a leitura\n',e,'\n')
+			print('Falha ao retornar a leitura\n',e)
 			exit(4)	
 		
 	# Metodo que simula o AUTOMATO Finito Determinisitico
@@ -97,7 +94,7 @@ class Lexer:
 					return Token(Tag['+'],'+',self.n_line, self.n_column)
 				
 				elif (c == '-'):
-					return Token(Tag['-','-',self.n_line,self.n_column])
+					return Token(Tag['-'],'-', self.n_line, self.n_column)
 				
 				elif (c == '*'):
 					return Token(Tag['*','*',self.n_line,self.n_column])
@@ -112,7 +109,7 @@ class Lexer:
 					estado = 11
 				
 				# Estado 13 ||Digitos 0-9
-				elif (c >= 48 or c <= 57):
+				elif (c.isdigit()):
 					lexema.append(c)
 					estado = 13
 				
@@ -190,7 +187,7 @@ class Lexer:
 					# permanece no estado = 11
 				else:
 					# Estado 12
-					self.retornaPonteiro()
+					#self.retornaPonteiro()
 					return Token(Tag['ID'], '', self.n_line, self.n_column) # Rever lexema - toString || __srt__(self)
 			
 			# Estado 13			
@@ -202,7 +199,7 @@ class Lexer:
 					estado = 15
 				else:
 					# Estado 14
-					self.retornaPonteiro()
+					#self.retornaPonteiro()
 					return Token(Tag['INTEGER'], 'INTEGER', self.n_line, self.n_column)
 				
 			# Estado 15						
@@ -211,21 +208,21 @@ class Lexer:
 					lexema.append(c) # permanece no estado 16
 				else:
 					# Estado 17
-					self.retornaPonteiro()
+					#self.retornaPonteiro()
 					return Token(Tag['DOUBLE'], 'DOUBLE', self.n_line, self.n_column)
 			
 			
 			# Estado 18 || Sinais graficos (imprimiveis) 32 a 126 Rever
 			if (estado == 18):
 				if (c == '"'):
-					self.sinalizaErro('String deve conter pelo menos um caractere. Erro na linha ', self.n_line, ' coluna ', self.n_column)
-					return null
+					print('[Erro Lexico]: String deve conter pelo menos um caractere. Erro na linha ', self.n_line, ' coluna ', self.n_column)
+					return None
 				elif (c == 'Padrao para [ConstString] invalido na linha '):
-					self.sinalizaErro('String deve conter pelo menos um caractere. Erro na linha ', self.n_line, ' coluna ', self.n_column)
-					return null
+					print('[Erro Lexico]: String deve conter pelo menos um caractere. Erro na linha ', self.n_line, ' coluna ', self.n_column)
+					return None
 				elif (lookahead == END_OF_FILE):
-					self.sinalizaErro('String deve ser fechada com \" antes do fim de arquivo')
-					return null 
+					print('[Erro Lexico]: String deve ser fechada com \" antes do fim de arquivo')
+					return None
 				else:
 					lexema.append(c)
 					estado = 19
@@ -236,11 +233,11 @@ class Lexer:
 					#Estado = 20
 					return Token(Tag['String'], '', self.n_line, self.n_column) # Rever toString do lexer
 				elif (c == 'Padrao para [ConstString] invalido na linha '):
-					self.sinalizaErro('String deve conter pelo menos um caractere. Erro na linha ', self.n_line, ' coluna ', self.n_column)
-					return null
+					print('[Erro Lexico]: String deve conter pelo menos um caractere. Erro na linha ', self.n_line, ' coluna ', self.n_column)
+					return None
 				elif (lookahead == END_OF_FILE):
-					self.sinalizaErro('String deve ser fechada com \" antes do fim de arquivo')
-					return null
+					print('[Erro Lexico]: String deve ser fechada com \" antes do fim de arquivo')
+					return None
 				else:
 					# Permanece no 19
 					lexema.append(c)
@@ -252,7 +249,7 @@ class Lexer:
 					return Token(Tag['>='],'>=',self.n_line, self.n_column)
 				else:
 					# Estado 27
-					self.retornaPonteiro()
+					#self.retornaPonteiro()
 					return Token(Tag['>'],'>',self.n_line, self.n_column)
 			
 			# Estado 29
@@ -267,7 +264,7 @@ class Lexer:
 					estado = 33
 				# Estado 32
 				else:
-					self.retornaPonteiro()
+					#self.retornaPonteiro()
 					return Token(Tag['<'],'<',self.n_line, self.n_column)
 			
 			# Estado 33
