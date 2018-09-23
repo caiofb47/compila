@@ -1,4 +1,4 @@
-import Tag
+from Tag import Tag
 class Token:
     
     # Variaveis depois ver qual forma e melhor :D
@@ -41,5 +41,5 @@ class Token:
 
 # A tabulacao nao funfa :/ 
     def __srt__(self):
-        return "Token: <'%s';'%s'> \t Linha: %d \t Coluna: %d" %(self.__nome, self.__lexema, self.__linha, self.__coluna)
+        return "Token: <'%s';'%s'> \t Linha: %d \t Coluna: %d" % (self.__nome, self.__lexema, self.__linha, self.__coluna)
 

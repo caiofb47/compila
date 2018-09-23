@@ -7,15 +7,16 @@ from TS import TS
 
 # Caio Fabio Gomes Alves - caiofb47@gmail.com
 
+
 class Lexer:
 	
 	# Construtor/Inicializador da classe LEXER
 	def __init__(self):
-		self.instance_file = '' # Referencia para o arquivo
-		self.END_OF_FILE = 0 #TEM Q SER |Constante| para fim do arquivo
+		self.instance_file = ''  # Referencia para o arquivo
+		self.END_OF_FILE = 0  # TEM Q SER |Constante| para fim do arquivo
 		self.n_line = 1
 		self.n_column = 1
-		self.lookahead = 0 # Armazena a posicao do ultimo caractere lido no arquivo	
+		self.lookahead = 0  # Armazena a posicao do ultimo caractere lido no arquivo	
 		
 	# Funcao para ler o arquivo
 	def Lexer(self, input_data):
@@ -23,7 +24,7 @@ class Lexer:
 		try:
 			
 			# Abrindo o arquivo
-			lido = open(input_data,'r')
+			lido = open(input_data, 'r')
 			# Lendo o arquivo
 			self.instance_file = lido.read()
 			
@@ -34,16 +35,15 @@ class Lexer:
 		except IOError as e:
 			print('Erro de abertura do arquivo:', e)
 			exit(1)
-			
 	
-	 #Volta uma posicao do buffer de leitura
+	 # Volta uma posicao do buffer de leitura
 	def retornaPonteiro(self):
 		try:
 			if(self.lookahead != self.END_OF_FILE):
 				self.instance_file.seek(self.instance_file.getFilePointer() - 1);
 				
 		except IOError as e:
-			print('Falha ao retornar a leitura\n',e)
+			print('Falha ao retornar a leitura\n', e)
 			exit(4)	
 		
 	# Metodo que simula o AUTOMATO Finito Determinisitico
@@ -59,8 +59,8 @@ class Lexer:
 			try:
 				# Como python le direto o arquivo, n precisa converter
 				if (self.lookahead != self.END_OF_FILE):
-					c = self.instance_file[self.lookahead] # Le um caractere
-					self.lookahead += 1 # Muda o apontamento
+					c = self.instance_file[self.lookahead]  # Le um caractere
+					self.lookahead += 1  # Muda o apontamento
 						
 			# Rever: essa exception, pq n e de entrada e saida :/
 			except IOError as e:
@@ -75,36 +75,35 @@ class Lexer:
 					# Retorna um novo token Tag['END_OF_FILE'], 'EOF', self.n_line, self.n_column
 					return Token(Tag['EOF'], 'EOF', self.n_line, self.n_column)
 				
-				elif(c == ' ' or c == '\t' or c =='\n' or c =='\r'):
+				elif(c == ' ' or c == '\t' or c == '\n' or c == '\r'):
 					# Permanece no estado 1
 					if(c == '\n' or c == '\r'):
-						self.n_line += 1 # Mudanca de linha
-						self.n_column = 1 # Volta o apontamento pra 1
+						self.n_line += 1  # Mudanca de linha
+						self.n_column = 1  # Volta o apontamento pra 1
 					elif (c == ' '):
 						self.n_column += 1
 					elif (c == '\t'):
-						self.n_column += 3 # Rever: nao tenho certeza se sao 3
+						self.n_column += 3  # Rever: nao tenho certeza se sao 3
 				
 					estado = 0
 						
 				# Estados principais
-				
 					
 				elif (c == '+'):
-					return Token(Tag['+'],'+',self.n_line, self.n_column)
+					return Token(Tag['+'], '+', self.n_line, self.n_column)
 				
 				elif (c == '-'):
-					return Token(Tag['-'],'-', self.n_line, self.n_column)
+					return Token(Tag['-'], '-', self.n_line, self.n_column)
 				
 				elif (c == '*'):
-					return Token(Tag['*','*',self.n_line,self.n_column])
+					return Token(Tag['*', '*', self.n_line, self.n_column])
 				
 				# Estado 4 vai pra 5,6
 				elif (c == '/'):
 					estado = 4
 					
 				# Estado 11 || ID - Letras A-Z || a-z
-			#	elif ((c >= 65 or c <= 95) and (c >= 97 or c <= 122)):
+			# 	elif ((c >= 65 or c <= 95) and (c >= 97 or c <= 122)):
 				elif (c.isalpha()):
 					estado = 11
 				
@@ -118,30 +117,29 @@ class Lexer:
 				elif (c == '"'):
 					estado = 18
 				
-				#Estado 21	
+				# Estado 21	
 				elif (c == ';'):
-					return Token(Tag[';'],';', self.n_line, self.n_column)
+					return Token(Tag[';'], ';', self.n_line, self.n_column)
 				
 				# Estado 22
 				elif (c == ','):
-					return Token(Tag[','],',', self.n_line, self.n_column)	
+					return Token(Tag[','], ',', self.n_line, self.n_column)	
 
 				# Estado 23
 				elif (c == ')'):
-					return Token(Tag[')'],')', self.n_line, self.n_column)
+					return Token(Tag[')'], ')', self.n_line, self.n_column)
 				
 				# Estado 24
 				elif (c == '('):
-					return Token(Tag['('],'(', self.n_line, self.n_column)
+					return Token(Tag['('], '(', self.n_line, self.n_column)
 				
 				# Estado 25
 				elif (c == '='):
-					return Token(Tag['='],'=', self.n_line, self.n_column)
+					return Token(Tag['='], '=', self.n_line, self.n_column)
 				
 				# Estado 26
 				elif (c == '>'):
 					estado = 26
-					
 				
 				# Estado 29
 				elif (c == '<'):
@@ -169,7 +167,7 @@ class Lexer:
 				if (c == '/'):
 					estado = 8
 				else:
-					estado = 6 # So sai daqui se vier */
+					estado = 6  # So sai daqui se vier */
 			
 			# Comentario de mais de uma linha		
 			if (estado == 8):
@@ -181,7 +179,7 @@ class Lexer:
 					return Token(Tag['Coment', '//', self.n_line, self.n_column])
 			
 			# Estado 11		
-			#Identificou um ID A-Z a-z 0-9		
+			# Identificou um ID A-Z a-z 0-9		
 			if (estado == 11):
 				if (c.isalpha() or c.isdigit()):
 					lexema.append(c)
@@ -189,41 +187,40 @@ class Lexer:
 					# permanece no estado = 11
 				else:
 					# Estado 12
-					#self.retornaPonteiro()
+					# self.retornaPonteiro()
 					con_lisString = ''.join(lexema)
-					return Token(Tag['ID'], con_lisString, self.n_line, self.n_column) # Rever lexema - toString || __srt__(self)
+					return Token(Tag['ID'], con_lisString, self.n_line, self.n_column)  # Rever lexema - toString || __srt__(self)
 			
 			# Estado 13			
 			if (estado == 13):
 				if (c >= 48 or c <= 57):
-					lexema.append(c) # permanece no estado 13
+					lexema.append(c)  # permanece no estado 13
 					self.n_column += 1
 				elif(c == '.'):
 					lexema.append(c)
 					estado = 15
 				else:
 					# Estado 14
-					#self.retornaPonteiro()
+					# self.retornaPonteiro()
 					return Token(Tag['INTEGER'], 'INTEGER', self.n_line, self.n_column)
 				
 			# Estado 15						
-			if (estado == 15): # Tratar os erros de n vir numero
+			if (estado == 15):  # Tratar os erros de n vir numero
 				if (c.isdigit()):
-					lexema.append(c) # permanece no estado 16
+					lexema.append(c)  # permanece no estado 16
 					self.n_column += 1
 				else:
 					# Estado 17
-					#self.retornaPonteiro()
+					# self.retornaPonteiro()
 					return Token(Tag['DOUBLE'], 'DOUBLE', self.n_line, self.n_column)
-			
 			
 			# Estado 18 || Sinais graficos (imprimiveis) 32 a 126 Rever
 			if (estado == 18):
 				if (c == '"'):
-					print('[Erro Lexico]: String deve conter pelo menos um caractere. Erro na linha %d \t coluna %d' %(self.n_line,  self.n_column))
+					print('[Erro Lexico]: String deve conter pelo menos um caractere. Erro na linha %d \t coluna %d' % (self.n_line, self.n_column))
 					return None
 				elif (c == 'Padrao para [ConstString] invalido na linha '):
-					print('[Erro Lexico]: String deve conter pelo menos um caractere. Erro na linha %d \t coluna %d' %(self.n_line,  self.n_column))
+					print('[Erro Lexico]: String deve conter pelo menos um caractere. Erro na linha %d \t coluna %d' % (self.n_line, self.n_column))
 					return None
 				elif (lookahead == END_OF_FILE):
 					print('[Erro Lexico]: String deve ser fechada com \" antes do fim de arquivo')
@@ -236,9 +233,9 @@ class Lexer:
 			# Estado 19
 			if (estado == 19):
 				if (c == '"'):
-					#Estado = 20
+					# Estado = 20
 					con_lisString = ''.joim(lexema)
-					return Token(Tag['String'], con_lisString, self.n_line, self.n_column) # Rever toString do lexer
+					return Token(Tag['String'], con_lisString, self.n_line, self.n_column)  # Rever toString do lexer
 				elif (c == 'Padrao para [ConstString] invalido na linha '):
 					print('[Erro Lexico]: String deve conter pelo menos um caractere. Erro na linha ', self.n_line, ' coluna ', self.n_column)
 					return None
@@ -254,39 +251,40 @@ class Lexer:
 			if (estado == 26):
 				if(c == '='):
 					# Estado 28
-					return Token(Tag['>='],'>=',self.n_line, self.n_column)
+					return Token(Tag['>='], '>=', self.n_line, self.n_column)
 				else:
 					# Estado 27
-					#self.retornaPonteiro()
-					return Token(Tag['>'],'>',self.n_line, self.n_column)
+					# self.retornaPonteiro()
+					return Token(Tag['>'], '>', self.n_line, self.n_column)
 			
 			# Estado 29
 			if (estado == 29):
 				# Estado 30
 				if (c == '>'):
-					return Token(Tag['<>'],'<>', self.n_line, self.n_column)
+					return Token(Tag['<>'], '<>', self.n_line, self.n_column)
 				# Estado 31
 				elif(c == '='):
-					return Token(Tag[''],'', self.n_line, self.n_column)
+					return Token(Tag[''], '', self.n_line, self.n_column)
 				elif(c == '-'):
 					estado = 33
 				# Estado 32
 				else:
-					#self.retornaPonteiro()
-					return Token(Tag['<'],'<',self.n_line, self.n_column)
+					# self.retornaPonteiro()
+					return Token(Tag['<'], '<', self.n_line, self.n_column)
 			
 			# Estado 33
 			if (estado == 33):
-				#Estado 34
+				# Estado 34
 				if (c == '-'):
-					return Token(Tag['<--'],'<--', self.n_line, self.n_column)
+					return Token(Tag['<--'], '<--', self.n_line, self.n_column)
+
 			
 # Main :D
 if __name__ == '__main__':
 	
 	# Variaveis Rever Deixar mais bonito
-	TS = TS()
-	token = Token('','',0,0)
+
+	token = Token('', '', 0, 0)
 	lexer = Lexer()
 	lexer.Lexer('/home/caiofb47/text')
 	
@@ -304,8 +302,5 @@ if __name__ == '__main__':
 	# Imprimir a tabela de simbolos
 	print('')
 	print('Tabela de simbolos: ')
-	
-	
-	
-	
+	TS().__srt__()
 
