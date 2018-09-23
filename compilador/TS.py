@@ -1,7 +1,6 @@
 from Token import Token
 from Tag import Tag
 
-
 class TS:
     # Lista 
     # Variavies
@@ -90,4 +89,5 @@ class TS:
         cont = 0
         for i in self.tabelaSimbolos:
             print 'posicao %i' % cont, '<"KW", "%s">' % self.tabelaSimbolos[cont][0]  # Acessando a variavel na posicao i/count, imprimindo o primeiro elemento da lista
+            #Dentro de outra lista
             cont += 1

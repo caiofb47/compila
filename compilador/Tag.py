@@ -8,6 +8,11 @@ Tag = {'KW':'Key_Word',
        '+':'OP_SOM',
        '-':'OP_SUB',
        '*':'OP_MUL',
+       'e':'OP_AND',
+       'ou':'OP_OR',
+       
+       '//':'COM_1',
+       '/**/':'COM_+',
        
        '(':'PR_AB',
        ')':'PR_FX',

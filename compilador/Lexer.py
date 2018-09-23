@@ -3,11 +3,6 @@ from Tag import Tag
 from Token import Token
 from TS import TS
 
-# Procurar pela tag "Rever"
-
-# Caio Fabio Gomes Alves - caiofb47@gmail.com
-
-
 class Lexer:
 	
 	# Construtor/Inicializador da classe LEXER
@@ -35,16 +30,6 @@ class Lexer:
 		except IOError as e:
 			print('Erro de abertura do arquivo:', e)
 			exit(1)
-	
-	 # Volta uma posicao do buffer de leitura
-	def retornaPonteiro(self):
-		try:
-			if(self.lookahead != self.END_OF_FILE):
-				self.instance_file.seek(self.instance_file.getFilePointer() - 1);
-				
-		except IOError as e:
-			print('Falha ao retornar a leitura\n', e)
-			exit(4)	
 		
 	# Metodo que simula o AUTOMATO Finito Determinisitico
 	def proxToken(self):
@@ -62,7 +47,6 @@ class Lexer:
 					c = self.instance_file[self.lookahead]  # Le um caractere
 					self.lookahead += 1  # Muda o apontamento
 						
-			# Rever: essa exception, pq n e de entrada e saida :/
 			except IOError as e:
 				print("Erro na leitura do caractere")
 				
@@ -83,7 +67,7 @@ class Lexer:
 					elif (c == ' '):
 						self.n_column += 1
 					elif (c == '\t'):
-						self.n_column += 3  # Rever: nao tenho certeza se sao 3
+						self.n_column += 3
 				
 					estado = 0
 						
@@ -144,6 +128,7 @@ class Lexer:
 				# Estado 29
 				elif (c == '<'):
 					estado = 29
+				
 						
 				# FIM # Estados principais		
 			
@@ -171,12 +156,12 @@ class Lexer:
 			
 			# Comentario de mais de uma linha		
 			if (estado == 8):
-				return Token(Tag['Coment'], '/**/', self.n_line, self.n_column)
+				return Token(Tag['/**/'], '/**/', self.n_line, self.n_column)
 
 			# Comentario de uma unica linha com parada no \n		
 			if (estado == 9):
 				if (c == '\n'):
-					return Token(Tag['Coment', '//', self.n_line, self.n_column])
+					return Token(Tag['//'], '//', self.n_line, self.n_column)
 			
 			# Estado 11		
 			# Identificou um ID A-Z a-z 0-9		
@@ -187,7 +172,6 @@ class Lexer:
 					# permanece no estado = 11
 				else:
 					# Estado 12
-					# self.retornaPonteiro()
 					con_lisString = ''.join(lexema)
 					return Token(Tag['ID'], con_lisString, self.n_line, self.n_column)  # Rever lexema - toString || __srt__(self)
 			
@@ -201,7 +185,6 @@ class Lexer:
 					estado = 15
 				else:
 					# Estado 14
-					# self.retornaPonteiro()
 					return Token(Tag['INTEGER'], 'INTEGER', self.n_line, self.n_column)
 				
 			# Estado 15						
@@ -254,7 +237,6 @@ class Lexer:
 					return Token(Tag['>='], '>=', self.n_line, self.n_column)
 				else:
 					# Estado 27
-					# self.retornaPonteiro()
 					return Token(Tag['>'], '>', self.n_line, self.n_column)
 			
 			# Estado 29
@@ -269,7 +251,6 @@ class Lexer:
 					estado = 33
 				# Estado 32
 				else:
-					# self.retornaPonteiro()
 					return Token(Tag['<'], '<', self.n_line, self.n_column)
 			
 			# Estado 33
