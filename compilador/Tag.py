@@ -12,7 +12,7 @@ Tag = {'KW':'Key_Word',
        'ou':'OP_OR',
        
        '//':'COM_1',
-       '/**/':'COM_+',
+       '/**/':'COM_2',
        
        '(':'PR_AB',
        ')':'PR_FX',
@@ -22,7 +22,7 @@ Tag = {'KW':'Key_Word',
        '<=':'OP_MEIG',
        '<>':'OP_DIFE',
        
-       'INTEGER': 'digito',
+       'INTEGER': 'Digito',
        'DOUBLE':'Numerico',
        'String':'Literal',
        

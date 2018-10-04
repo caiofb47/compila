@@ -133,11 +133,7 @@ class Lexer:
 				# FIM # Estados principais		
 			
 			if (estado == 4):
-				# Identificou um comentario
-				if (c == '*'):
-					estado = 6
-					
-				elif(c == '/'):
+				if(c == '/'):
 					estado = 9
 				# Outro = else :D
 				else:
@@ -151,8 +147,6 @@ class Lexer:
 			if (estado == 7):
 				if (c == '/'):
 					estado = 8
-				else:
-					estado = 6  # So sai daqui se vier */
 			
 			# Comentario de mais de uma linha		
 			if (estado == 8):
@@ -160,6 +154,10 @@ class Lexer:
 
 			# Comentario de uma unica linha com parada no \n		
 			if (estado == 9):
+				# Identificou um comentario
+				if (c == '*'):
+					estado = 6
+					
 				if (c == '\n'):
 					return Token(Tag['//'], '//', self.n_line, self.n_column)
 			
@@ -177,7 +175,7 @@ class Lexer:
 			
 			# Estado 13			
 			if (estado == 13):
-				if (c >= 48 or c <= 57):
+				if (c.isdigit()):
 					lexema.append(c)  # permanece no estado 13
 					self.n_column += 1
 				elif(c == '.'):
@@ -185,7 +183,8 @@ class Lexer:
 					estado = 15
 				else:
 					# Estado 14
-					return Token(Tag['INTEGER'], 'INTEGER', self.n_line, self.n_column)
+					con_lisString = ''.join(lexema)
+					return Token(Tag['INTEGER'], con_lisString, self.n_line, self.n_column)
 				
 			# Estado 15						
 			if (estado == 15):  # Tratar os erros de n vir numero
@@ -195,7 +194,8 @@ class Lexer:
 				else:
 					# Estado 17
 					# self.retornaPonteiro()
-					return Token(Tag['DOUBLE'], 'DOUBLE', self.n_line, self.n_column)
+					con_lisString = ''.join(lexema)
+					return Token(Tag['DOUBLE'], con_lisString, self.n_line, self.n_column)
 			
 			# Estado 18 || Sinais graficos (imprimiveis) 32 a 126 Rever
 			if (estado == 18):
@@ -267,6 +267,7 @@ if __name__ == '__main__':
 
 	token = Token('', '', 0, 0)
 	lexer = Lexer()
+	# Endereco do arquivo
 	lexer.Lexer('/home/caiofb47/text')
 	
 	# Enquanto nao houver erros
