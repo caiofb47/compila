@@ -8,8 +8,8 @@ Tag = {'KW':'Key_Word',
        '+':'OP_SOM',
        '-':'OP_SUB',
        '*':'OP_MUL',
-       'e':'OP_AND',
-       'ou':'OP_OR',
+       'E':'OP_AND',
+       'OU':'OP_OR',
        
        '//':'COM_1',
        '/**/':'COM_2',
@@ -22,9 +22,9 @@ Tag = {'KW':'Key_Word',
        '<=':'OP_MEIG',
        '<>':'OP_DIFE',
        
-       'INTEGER': 'Digito',
-       'DOUBLE':'Numerico',
-       'String':'Literal',
+       'INTEGER': 'DIGITO',
+       'DOUBLE':'NUMERICO',
+       'String':'LITERAL',
        
        ',':'SMB_V',
        ';':'SMB_PV'

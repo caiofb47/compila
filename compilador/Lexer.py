@@ -195,25 +195,14 @@ class Lexer:
 			
 			# Estado 18 || Sinais graficos (imprimiveis) 32 a 126 Rever
 			if (estado == 18):
-				if (c == '"'):
-					print('[Erro Lexico]: String deve conter pelo menos um caractere. Erro na linha %d \t coluna %d' % (self.n_line, self.n_column))
-					return None
-				elif (c == 'Padrao para [ConstString] invalido na linha '):
-					print('[Erro Lexico]: String deve conter pelo menos um caractere. Erro na linha %d \t coluna %d' % (self.n_line, self.n_column))
-					return None
-				elif (self.lookahead == self.END_OF_FILE):
-					print('[Erro Lexico]: String deve ser fechada com \" antes do fim de arquivo')
-					return None
-				else:
-					lexema.append(c)
-					self.n_column += 1
+				if(c.isalpha() or c.isdigit()):
 					estado = 19
 			
 			# Estado 19
 			if (estado == 19):
 				if (c == '"'):
 					# Estado = 20
-					con_lisString = ''.joim(lexema)
+					con_lisString = ''.join(lexema)
 					return Token(Tag['String'], con_lisString, self.n_line, self.n_column)  # Rever toString do lexer
 				elif (c == 'Padrao para [ConstString] invalido na linha '):
 					print('[Erro Lexico]: String deve conter pelo menos um caractere. Erro na linha ', self.n_line, ' coluna ', self.n_column)
@@ -254,6 +243,13 @@ class Lexer:
 				# Estado 34
 				if (c == '-'):
 					return Token(Tag['<--'], '<--', self.n_line, self.n_column)
+				
+			if (estado == 36):
+				return Token(Tag['E'], 'E', self.n_line, self.n_column)
+			
+			if (estado == 39):
+				return Token(Tag['OU'], 'OU', self.n_line, self.n_column)
+
 
 			
 # Main :D
