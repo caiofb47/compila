@@ -93,8 +93,6 @@ class Lexer:
 				
 				# Estado 13 ||Digitos 0-9
 				elif (c.isdigit()):
-					lexema.append(c)
-					self.n_column += 1
 					estado = 13
 				
 				# Estado 18 || String
@@ -179,7 +177,6 @@ class Lexer:
 					lexema.append(c)  # permanece no estado 13
 					self.n_column += 1
 				elif(c == '.'):
-					lexema.append(c)
 					estado = 15
 				else:
 					# Estado 14
@@ -188,7 +185,7 @@ class Lexer:
 				
 			# Estado 15						
 			if (estado == 15):  # Tratar os erros de n vir numero
-				if (c.isdigit()):
+				if (c.isdigit() or c == '.'):
 					lexema.append(c)  # permanece no estado 16
 					self.n_column += 1
 				else:
@@ -205,7 +202,7 @@ class Lexer:
 				elif (c == 'Padrao para [ConstString] invalido na linha '):
 					print('[Erro Lexico]: String deve conter pelo menos um caractere. Erro na linha %d \t coluna %d' % (self.n_line, self.n_column))
 					return None
-				elif (lookahead == END_OF_FILE):
+				elif (self.lookahead == self.END_OF_FILE):
 					print('[Erro Lexico]: String deve ser fechada com \" antes do fim de arquivo')
 					return None
 				else:
@@ -222,7 +219,7 @@ class Lexer:
 				elif (c == 'Padrao para [ConstString] invalido na linha '):
 					print('[Erro Lexico]: String deve conter pelo menos um caractere. Erro na linha ', self.n_line, ' coluna ', self.n_column)
 					return None
-				elif (lookahead == END_OF_FILE):
+				elif (self.lookahead == self.END_OF_FILE):
 					print('[Erro Lexico]: String deve ser fechada com \" antes do fim de arquivo')
 					return None
 				else:
