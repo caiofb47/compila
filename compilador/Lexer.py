@@ -46,6 +46,13 @@ class Lexer:
 				if (self.lookahead != self.END_OF_FILE):
 					c = self.instance_file[self.lookahead]  # Le um caractere
 					self.lookahead += 1  # Muda o apontamento
+					if(c == '\n' or c == '\r'):
+						self.n_line += 1  # Mudanca de linha
+						self.n_column = 1  # Volta o apontamento pra 1
+					elif (c == ' '):
+						self.n_column += 1
+					elif (c == '\t'):
+						self.n_column += 3
 						
 			except IOError as e:
 				print("Erro na leitura do caractere")
@@ -58,16 +65,7 @@ class Lexer:
 				if(self.lookahead == self.END_OF_FILE):
 					# Retorna um novo token Tag['END_OF_FILE'], 'EOF', self.n_line, self.n_column
 					return Token(Tag['EOF'], 'EOF', self.n_line, self.n_column)
-				
-				elif(c == ' ' or c == '\t' or c == '\n' or c == '\r'):
-					# Permanece no estado 1
-					if(c == '\n' or c == '\r'):
-						self.n_line += 1  # Mudanca de linha
-						self.n_column = 1  # Volta o apontamento pra 1
-					elif (c == ' '):
-						self.n_column += 1
-					elif (c == '\t'):
-						self.n_column += 3
+
 				
 					estado = 0
 						
