@@ -149,7 +149,7 @@ class Lexer:
 			if (estado == 8):
 				return Token(Tag['/**/'], '/**/', self.n_line, self.n_column)
 
-			# Comentario de uma unica linha com parada no \n		
+			# Comentario de uma unica linha com parada no \n 		
 			if (estado == 9):
 				# Identificou um comentario
 				if (c == '*'):
