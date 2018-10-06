@@ -79,7 +79,7 @@ class Lexer:
 					return Token(Tag['-'], '-', self.n_line, self.n_column)
 				
 				elif (c == '*'):
-					return Token(Tag['*', '*', self.n_line, self.n_column])
+					return Token(Tag['*'], '*', self.n_line, self.n_column)
 				
 				# Estado 4 vai pra 5,6
 				elif (c == '/'):
@@ -157,7 +157,7 @@ class Lexer:
 					
 				if (c == '\n'):
 					return Token(Tag['//'], '//', self.n_line, self.n_column)
-			
+	
 			# Estado 11		
 			# Identificou um ID A-Z a-z 0-9		
 			if (estado == 11):
