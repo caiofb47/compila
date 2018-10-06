@@ -166,9 +166,14 @@ class Lexer:
 					self.n_column += 1
 					# permanece no estado = 11
 				else:
-					# Estado 12
-					con_lisString = ''.join(lexema)
-					return Token(Tag['ID'], con_lisString, self.n_line, self.n_column)  # Rever lexema - toString || __srt__(self)
+					if (lexema[0]== 'e'):
+						estado = 36
+					elif(lexema[0] == 'o' and lexema[1]== 'u'):
+						estado = 39
+					else:	
+						# Estado 12
+						con_lisString = ''.join(lexema)
+						return Token(Tag['ID'], con_lisString, self.n_line, self.n_column)  # Rever lexema - toString || __srt__(self)
 			
 			# Estado 13			
 			if (estado == 13):
@@ -245,10 +250,10 @@ class Lexer:
 					return Token(Tag['<--'], '<--', self.n_line, self.n_column)
 				
 			if (estado == 36):
-				return Token(Tag['E'], 'E', self.n_line, self.n_column)
+				return Token(Tag['e'], 'e', self.n_line, self.n_column)
 			
 			if (estado == 39):
-				return Token(Tag['OU'], 'OU', self.n_line, self.n_column)
+				return Token(Tag['ou'], 'ou', self.n_line, self.n_column)
 
 
 			
