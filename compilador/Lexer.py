@@ -71,19 +71,20 @@ class Lexer:
 						self.n_column = 0 # Retorna coluna
 					if (c == '\t'):
 						self.n_column += 3
-					
+				
+				# Estado 1
 				elif (c == '+'):
 					return Token(Tag['+'], '+', self.n_line, self.n_column)
-				
+				# Estado 2
 				elif (c == '-'):
 					return Token(Tag['-'], '-', self.n_line, self.n_column)
-				
+				# Estado 3
 				elif (c == '*'):
 					return Token(Tag['*'], '*', self.n_line, self.n_column)
-				
-				# Estado 4 vai pra 5,6
+
+				# Estado 4
 				elif (c == '/'):
-					estado = 4
+					estado = 5
 					
 				# Estado 11 || ID - Letras A-Z || a-z
 			# 	elif ((c >= 65 or c <= 95) and (c >= 97 or c <= 122)):
@@ -127,40 +128,41 @@ class Lexer:
 					estado = 29
 				
 						
-				# FIM # Estados principais		
+####################################ESTADO 4###########################################
 			
-			if (estado == 4):
+			if (estado == 5):
 				if(c == '/'):
-					estado = 9
-				# Outro = else :D
+					estado = 6
 				else:
 					return Token(Tag['/'], '/', self.n_line, self.n_column)
-			  
-			  
-			# Mini Loop
+				
+			# Comentario de uma unica linha com parada no \n 		
 			if (estado == 6):
+				# Identificou um comentario
 				if (c == '*'):
 					estado = 7
 					
+				elif (c == '\n'):
+					return Token(Tag['//'], '//', self.n_line, self.n_column)
+
+			# Mini Loop
 			if (estado == 7):
-				if (c == '/'):
+				if (c == '*'):
 					estado = 8
+					
+			if (estado == 8):
+				if (c == '/'):
+					estado = 9
 			
 			# Comentario de mais de uma linha		
-			if (estado == 8):
+			if (estado == 9):
 				return Token(Tag['/**/'], '/**/', self.n_line, self.n_column)
 
-			# Comentario de uma unica linha com parada no \n 		
-			if (estado == 9):
-				# Identificou um comentario
-				if (c == '*'):
-					estado = 6
-					
-				if (c == '\n'):
-					return Token(Tag['//'], '//', self.n_line, self.n_column)
-	
+				
+####################################ESTADO 4###########################################	
+####################################ESTADO 11##########################################	
 			# Estado 11		
-			# Identificou um ID A-Z a-z 0-9		
+			# Identificou um ID 
 			if (estado == 11):
 				if (c.isalpha() or c.isdigit()):
 					lexema.append(c)
