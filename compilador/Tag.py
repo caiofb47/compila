@@ -21,6 +21,8 @@ Tag = {'KW':'Key_Word',
        '>=':'OP_MAIG',
        '<=':'OP_MEIG',
        '<>':'OP_DIFE',
+       '<':'OP_MEN',
+       '>':'OP_MAI',
        
        'INTEGER': 'DIGITO',
        'DOUBLE':'NUMERICO',

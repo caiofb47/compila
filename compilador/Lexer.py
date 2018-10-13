@@ -135,7 +135,8 @@ class Lexer:
 				# Outro = else :D
 				else:
 					return Token(Tag['/'], '/', self.n_line, self.n_column)
-			
+			  
+			  
 			# Mini Loop
 			if (estado == 6):
 				if (c == '*'):
