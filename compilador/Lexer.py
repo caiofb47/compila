@@ -207,13 +207,33 @@ class Lexer:
 
 #$$$$$$$$$$$$$$$$$$$$$$$$ Ramo do estado 27 $$$$$$$$$ 27 ao 29 $$$$$$$$$$$$$$$$$$$$$#
 			if (estado == 27):
+				# Estado 29
 				if(c == '='):
-					# Estado 29
 					return Token(Tag['>='], '>=', self.n_line, self.n_column)
+				# Estado 28
 				elif(c.isdigit() or c.isalpha() or c == ' '):
-					# Estado 28
 					return Token(Tag['>'], '>', self.n_line, self.n_column)
 #$$$$$$$$$$$$$$$$$$$$$$$$ Ramo do estado 27 $$$$$$$$$ 27 ao 29 $$$$$$$$$$$$$$$$$$$$$#
+
+#$$$$$$$$$$$$$$$$$$$$$$$$ Ramo do estado 30 $$$$$$$$$ 30 ao 36 $$$$$$$$$$$$$$$$$$$$$#
+			if (estado == 30):
+				# Estado 32
+				if(c == '='):
+					return Token(Tag['<='], '<=', self.n_line, self.n_column)
+				# Estado 34
+				elif (c == '>'):
+					return Token(Tag['<>'], '<>', self.n_line, self.n_column)
+				# Estado 35
+				elif (c == '-'):
+					estado = 36
+				elif(c.isdigit() or c.isalpha() or c == ' '):
+					# Estado 31
+					return Token(Tag['<'], '<', self.n_line, self.n_column)
+
+			if (estado == 36):
+				if (c.isalpha() or c.isdigit() or c == ' '):
+					return Token(Tag['<--'], '<--', self.n_line, self.n_column)
+#$$$$$$$$$$$$$$$$$$$$$$$$ Ramo do estado 30 $$$$$$$$$ 30 ao 36 $$$$$$$$$$$$$$$$$$$$$#
 
 # Main :D
 if __name__ == '__main__':
