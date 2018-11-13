@@ -1,4 +1,3 @@
-# Imports
 from Tag import Tag
 from Token import Token
 from TS import TS
@@ -239,19 +238,17 @@ class Lexer:
 if __name__ == '__main__':
 	
 	# Variaveis Rever Deixar mais bonito
-
 	token = Token('', '', 0, 0)
 	lexer = Lexer()
+
 	# Endereco do arquivo
 	lexer.Lexer('C:/Users/caio-/oi.txt')
 	
 	# Enquanto nao houver erros
 	while(True):
 		token = lexer.proxToken()
-
 		if(token != None):
 			print(token.__srt__())
-			
 		# Break caso fim de arquivo
 		if(token != None and token.nomeGet() == Tag['EOF']):
 			break
