@@ -54,6 +54,9 @@ class Lexer:
 			# Movimentacao do AFD
 			# Inicio
 			# Estado 0
+
+			if (c == '\n'):
+				self.n_column =0
 			if (estado == 0):
 				
 				if(self.lookahead == self.END_OF_FILE):
